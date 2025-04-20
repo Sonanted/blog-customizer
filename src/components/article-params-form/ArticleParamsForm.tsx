@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import {
 	fontFamilyOptions,
@@ -35,6 +35,26 @@ export const ArticleParamsForm = ({
 	const [articleFormState, setArticleFormState] =
 		useState<ArticleStateType>(defaultArticleState);
 
+	const sidebarRef = useRef<HTMLInputElement | null>(null);
+
+	useEffect(() => {
+		if (!isSidebarOpen) return;
+
+		const handleClickOutside = (event: MouseEvent) => {
+			if (
+				sidebarRef.current &&
+				!sidebarRef.current.contains(event.target as Node)
+			) {
+				setIsSidebarOpen(false);
+			}
+		};
+
+		document.addEventListener('mousedown', handleClickOutside);
+		return () => {
+			document.removeEventListener('mousedown', handleClickOutside);
+		};
+	}, [isSidebarOpen]);
+
 	const handleOptionChange = (option: string) => (value: OptionType) => {
 		setArticleFormState((prevState) => ({
 			...prevState,
@@ -62,7 +82,8 @@ export const ArticleParamsForm = ({
 			<aside
 				className={clsx(styles.container, {
 					[styles.container_open]: isSidebarOpen,
-				})}>
+				})}
+				ref={sidebarRef}>
 				<form className={styles.form} onSubmit={handleSubmit}>
 					<Text size={31} uppercase={true} weight={800}>
 						Задавайте параметры
