@@ -168,12 +168,22 @@ export const fontSizeOptions: OptionType[] = [
 	{ title: '38px', value: '38px', className: 'font-size-38' },
 ];
 
+export const ArticleOption = {
+	fontFamily: 'fontFamilyOption',
+	fontSize: 'fontSizeOption',
+	fontColor: 'fontColor',
+	backgroundColor: 'backgroundColor',
+	contentWidth: 'contentWidth',
+} as const;
+
 export const defaultArticleState = {
-	fontFamilyOption: fontFamilyOptions[0],
-	fontColor: fontColors[0],
-	backgroundColor: backgroundColors[0],
-	contentWidth: contentWidthArr[0],
-	fontSizeOption: fontSizeOptions[0],
+	[ArticleOption.fontFamily]: fontFamilyOptions[0],
+	[ArticleOption.fontColor]: fontColors[0],
+	[ArticleOption.backgroundColor]: backgroundColors[0],
+	[ArticleOption.contentWidth]: contentWidthArr[0],
+	[ArticleOption.fontSize]: fontSizeOptions[0],
 };
+
+export type ArticleOption = (typeof ArticleOption)[keyof typeof ArticleOption];
 
 export type ArticleStateType = typeof defaultArticleState;
